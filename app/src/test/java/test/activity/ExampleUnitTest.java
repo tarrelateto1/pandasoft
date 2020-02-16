@@ -1,4 +1,4 @@
-package test.pandasoft;
+package test.activity;
 
 import org.junit.Test;
 
