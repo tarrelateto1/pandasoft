@@ -3,12 +3,15 @@ package test.pandasoft;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,7 +56,6 @@ public class ListNews extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_news);
-//        System.out.print("Begin");
 
 //      test
         new SimpleTask().execute("https://5c065a3fc16e1200139479cc.mockapi.io/api/v1/news");
@@ -110,7 +112,7 @@ public class ListNews extends AppCompatActivity {
                                 Log.i("App suscess",item.title);
 
                             }
-            for (Item item : page.data) {
+            for (final Item item : page.data) {
 //            Get the reference from XML layout
                 parent_LinearLayout = (LinearLayout) findViewById(R.id.linearLayout);
 
@@ -123,7 +125,17 @@ public class ListNews extends AppCompatActivity {
                 linearLayout.setLayoutParams(lp);
                 linearLayout.setBackgroundResource(R.drawable.border);
                 linearLayout.setGravity(Gravity.CENTER);
+                linearLayout.setOnClickListener(new Button.OnClickListener() {
+                    public void onClick(View v) {
 
+                        Intent i = new Intent(ListNews.this, SingleNew.class);
+                        i.putExtra("image",item.image);
+                        i.putExtra("title",item.title);
+                        i.putExtra("detail",item.detail);
+                        i.putExtra("dateCreate",item.create);
+                        startActivity(i);
+                    }
+                });
 
 //        create ImageView
                 ImageView imageView = new ImageView(getApplicationContext());
