@@ -16,48 +16,33 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
-import strcture.Item;
-import strcture.Page1;
+import strcture.ItemNew;
+import strcture.ListData;
 
 public class ListNews extends AppCompatActivity {
 
     LinearLayout parent_LinearLayout ;
-    Page1 page;
+    ListData page;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_news);
 
-//      test
         new SimpleTask().execute("https://5c065a3fc16e1200139479cc.mockapi.io/api/v1/news");
 
     }
@@ -104,15 +89,15 @@ public class ListNews extends AppCompatActivity {
 //        updateWebView(result);
   Log.i("App suscess",result);
             Gson gson = new Gson();
-            page = gson.fromJson(result.toString(), Page1.class);
+            page = gson.fromJson(result.toString(), ListData.class);
 
                             System.out.println(page.status);
-                            for (Item item : page.data) {
-                                Log.i("App suscess",item.id);
-                                Log.i("App suscess",item.title);
+                            for (ItemNew itemNew : page.data) {
+                                Log.i("App suscess", itemNew.id);
+                                Log.i("App suscess", itemNew.title);
 
                             }
-            for (final Item item : page.data) {
+            for (final ItemNew itemNew : page.data) {
 //            Get the reference from XML layout
                 parent_LinearLayout = (LinearLayout) findViewById(R.id.linearLayout);
 
@@ -129,10 +114,10 @@ public class ListNews extends AppCompatActivity {
                     public void onClick(View v) {
 
                         Intent i = new Intent(ListNews.this, SingleNew.class);
-                        i.putExtra("image",item.image);
-                        i.putExtra("title",item.title);
-                        i.putExtra("detail",item.detail);
-                        i.putExtra("dateCreate",item.create);
+                        i.putExtra("image", itemNew.image);
+                        i.putExtra("title", itemNew.title);
+                        i.putExtra("detail", itemNew.detail);
+                        i.putExtra("dateCreate", itemNew.create);
                         startActivity(i);
                     }
                 });
@@ -148,7 +133,7 @@ public class ListNews extends AppCompatActivity {
 //        imageView.setId(1);
 
 //        imageView.setBackgroundColor(Color.rgb(255,255,255));
-                Picasso.get().load(item.image).into(imageView);
+                Picasso.get().load(itemNew.image).into(imageView);
 
 
 //        create TextView
@@ -159,7 +144,7 @@ public class ListNews extends AppCompatActivity {
                 lp_textView.setMargins(10, 10, 10, 10);
                 textView.setLayoutParams(lp_textView);
                 textView.setTextSize(pxFromDp(ListNews.this, 5));
-                textView.setText(item.title);
+                textView.setText(itemNew.title);
                 textView.setTextColor(Color.rgb(0, 0, 0));
                 textView.setTypeface(null, Typeface.BOLD);
                 textView.setGravity(Gravity.CENTER);

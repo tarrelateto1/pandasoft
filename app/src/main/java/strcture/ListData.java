@@ -3,8 +3,8 @@ package strcture;
 
 import java.util.List;
 
-public class Page1 {
+public class ListData {
    public String status;
    public String message;
-   public List<Item> data;
+   public List<ItemNew> data;
 }

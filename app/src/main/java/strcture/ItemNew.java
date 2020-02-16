@@ -1,6 +1,6 @@
 package strcture;
 
-public class Item {
+public class ItemNew {
    public String id;
    public String uuid;
    public String create;
