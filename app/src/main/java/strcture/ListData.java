@@ -6,5 +6,5 @@ import java.util.List;
 public class ListData {
    public String status;
    public String message;
-   public List<ItemNew> data;
+   public List<ListItem> data;
 }

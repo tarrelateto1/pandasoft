@@ -19,10 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import strcture.ItemNew;
+import strcture.ListItem;
 import strcture.ListData;
-
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,10 +42,41 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+//        jsonParse();
 
 
     }
 
+    private void jsonParse() {
+
+        String url = "https://5c065a3fc16e1200139479cc.mockapi.io/api/v1/news";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+//                            System.out.println("test : "+response.toString());
+                            JSONArray jsonArray = response.getJSONArray("data");
+                            Gson gson = new Gson();
+                            ListData page = gson.fromJson(response.toString(), ListData.class);
+                            System.out.println(page.status);
+                            for (ListItem item : page.data) {
+                                System.out.println("ID : " + item.id);
+                                System.out.println("ID : " + item.title);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+    }
 
 
 }

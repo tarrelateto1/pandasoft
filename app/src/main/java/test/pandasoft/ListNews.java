@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import strcture.ItemNew;
+import strcture.ListItem;
 import strcture.ListData;
 
 public class ListNews extends AppCompatActivity {
@@ -43,6 +43,7 @@ public class ListNews extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_news);
 
+//      test
         new SimpleTask().execute("https://5c065a3fc16e1200139479cc.mockapi.io/api/v1/news");
 
     }
@@ -92,12 +93,12 @@ public class ListNews extends AppCompatActivity {
             page = gson.fromJson(result.toString(), ListData.class);
 
                             System.out.println(page.status);
-                            for (ItemNew itemNew : page.data) {
-                                Log.i("App suscess", itemNew.id);
-                                Log.i("App suscess", itemNew.title);
+                            for (ListItem item : page.data) {
+                                Log.i("App suscess",item.id);
+                                Log.i("App suscess",item.title);
 
                             }
-            for (final ItemNew itemNew : page.data) {
+            for (final ListItem item : page.data) {
 //            Get the reference from XML layout
                 parent_LinearLayout = (LinearLayout) findViewById(R.id.linearLayout);
 
@@ -114,10 +115,10 @@ public class ListNews extends AppCompatActivity {
                     public void onClick(View v) {
 
                         Intent i = new Intent(ListNews.this, SingleNew.class);
-                        i.putExtra("image", itemNew.image);
-                        i.putExtra("title", itemNew.title);
-                        i.putExtra("detail", itemNew.detail);
-                        i.putExtra("dateCreate", itemNew.create);
+                        i.putExtra("image",item.image);
+                        i.putExtra("title",item.title);
+                        i.putExtra("detail",item.detail);
+                        i.putExtra("dateCreate",item.create);
                         startActivity(i);
                     }
                 });
@@ -133,7 +134,7 @@ public class ListNews extends AppCompatActivity {
 //        imageView.setId(1);
 
 //        imageView.setBackgroundColor(Color.rgb(255,255,255));
-                Picasso.get().load(itemNew.image).into(imageView);
+                Picasso.get().load(item.image).into(imageView);
 
 
 //        create TextView
@@ -144,7 +145,7 @@ public class ListNews extends AppCompatActivity {
                 lp_textView.setMargins(10, 10, 10, 10);
                 textView.setLayoutParams(lp_textView);
                 textView.setTextSize(pxFromDp(ListNews.this, 5));
-                textView.setText(itemNew.title);
+                textView.setText(item.title);
                 textView.setTextColor(Color.rgb(0, 0, 0));
                 textView.setTypeface(null, Typeface.BOLD);
                 textView.setGravity(Gravity.CENTER);
