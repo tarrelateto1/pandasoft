@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import strcture.ListItem;
 import strcture.ListData;
@@ -37,6 +39,8 @@ public class ListNews extends AppCompatActivity {
 
     LinearLayout parent_LinearLayout ;
     ListData page;
+    private static android.os.Handler handler = new android.os.Handler();
+    private static Runnable runnable = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,7 +49,36 @@ public class ListNews extends AppCompatActivity {
 
 //      test
         new SimpleTask().execute("https://5c065a3fc16e1200139479cc.mockapi.io/api/v1/news");
+        if (handler == null) {
+            handler = new Handler();
+        } else {
+            handler.removeCallbacks(runnable);
+        }
+        if (runnable == null)
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    //do your task here
+                    Intent i = new Intent(ListNews.this, MainActivity.class);
+                    startActivity(i);
+                }
+            };
+        start();
+    }
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        stop();
+        start();
 
+    }
+
+    void start() {
+        handler.postDelayed(runnable,  TimeUnit.MINUTES.toMillis(10));
+    }
+
+    void stop() {
+        handler.removeCallbacks(runnable);
     }
 
     private class SimpleTask extends AsyncTask<String, Void, String> {
@@ -81,23 +114,15 @@ public class ListNews extends AppCompatActivity {
             } catch (IOException e) {
 
             }
-            Log.i("App","Data received:"+result);
             return result;
         }
 
         protected void onPostExecute(String result)  {
             // Dismiss ProgressBar
 //        updateWebView(result);
-  Log.i("App suscess",result);
             Gson gson = new Gson();
             page = gson.fromJson(result.toString(), ListData.class);
 
-                            System.out.println(page.status);
-                            for (ListItem item : page.data) {
-                                Log.i("App suscess",item.id);
-                                Log.i("App suscess",item.title);
-
-                            }
             for (final ListItem item : page.data) {
 //            Get the reference from XML layout
                 parent_LinearLayout = (LinearLayout) findViewById(R.id.linearLayout);
