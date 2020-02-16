@@ -35,7 +35,7 @@
         android:layout_marginHorizontal="20dp"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ลงชื่อเข้าใช้"

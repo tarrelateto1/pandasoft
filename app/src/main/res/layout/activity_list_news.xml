@@ -7,51 +7,47 @@
     tools:context=".ListNews">
 
 <LinearLayout
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
     android:layout_marginHorizontal="30dp"
     android:orientation="vertical"
     >
-    <LinearLayout
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border"
 
-            >
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+<!--        <LinearLayout-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/border"-->
+<!--            android:gravity="center">-->
 
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:adjustViewBounds="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="0.5in"
-                android:layout_margin="10dp"
-                app:srcCompat="@drawable/img2"
-                android:background="#ffffff"
-                android:padding="1dp"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView5"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:maxWidth="0.5in"-->
+<!--                android:layout_margin="10dp"-->
+<!--                app:srcCompat="@drawable/img2"-->
+<!--                android:background="#ffffff"-->
+<!--                android:padding="1dp"/>-->
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="15dp"
-                android:text="TextView"
-                android:textStyle="bold"
-                android:gravity="center"/>
+<!--            <TextView-->
+<!--                android:id="@+id/textView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text="TextView"-->
+<!--                android:textStyle="bold"-->
+<!--                android:gravity="center"/>-->
 
 
-        </LinearLayout>
-       </LinearLayout>
+<!--       </LinearLayout>-->
 
 </LinearLayout>
 

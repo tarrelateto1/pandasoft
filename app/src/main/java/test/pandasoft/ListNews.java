@@ -2,13 +2,171 @@ package test.pandasoft;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import strcture.Item;
+import strcture.Page1;
 
 public class ListNews extends AppCompatActivity {
 
+    LinearLayout parent_LinearLayout ;
+    Page1 page;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_news);
+//        System.out.print("Begin");
+
+//      test
+        new SimpleTask().execute("https://5c065a3fc16e1200139479cc.mockapi.io/api/v1/news");
+
+    }
+
+    private class SimpleTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            // Create Show ProgressBar
+        }
+
+        protected String doInBackground(String... urls)   {
+            String result = "";
+            try {
+
+                HttpGet httpGet = new HttpGet(urls[0]);
+                HttpClient client = new DefaultHttpClient();
+
+                HttpResponse response = client.execute(httpGet);
+
+                int statusCode = response.getStatusLine().getStatusCode();
+
+                if (statusCode == 200) {
+                    InputStream inputStream = response.getEntity().getContent();
+                    BufferedReader reader = new BufferedReader
+                            (new InputStreamReader(inputStream));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result += line;
+                    }
+                }
+
+            } catch (ClientProtocolException e) {
+
+            } catch (IOException e) {
+
+            }
+            Log.i("App","Data received:"+result);
+            return result;
+        }
+
+        protected void onPostExecute(String result)  {
+            // Dismiss ProgressBar
+//        updateWebView(result);
+  Log.i("App suscess",result);
+            Gson gson = new Gson();
+            page = gson.fromJson(result.toString(), Page1.class);
+
+                            System.out.println(page.status);
+                            for (Item item : page.data) {
+                                Log.i("App suscess",item.id);
+                                Log.i("App suscess",item.title);
+
+                            }
+            for (Item item : page.data) {
+//            Get the reference from XML layout
+                parent_LinearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+
+//        Create chile of parent
+                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+                lp.setMargins(0,0,0,100);
+                linearLayout.setLayoutParams(lp);
+                linearLayout.setBackgroundResource(R.drawable.border);
+                linearLayout.setGravity(Gravity.CENTER);
+
+
+//        create ImageView
+                ImageView imageView = new ImageView(getApplicationContext());
+                LinearLayout.LayoutParams lp_ImageView = new LinearLayout.LayoutParams(
+                        300,
+                        300);
+                lp_ImageView.setMargins(40, 40, 10, 40);
+                imageView.setPadding(1, 1, 1, 1);
+                imageView.setLayoutParams(lp_ImageView);
+//        imageView.setId(1);
+
+//        imageView.setBackgroundColor(Color.rgb(255,255,255));
+                Picasso.get().load(item.image).into(imageView);
+
+
+//        create TextView
+                TextView textView = new TextView(getApplicationContext());
+                LinearLayout.LayoutParams lp_textView = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+                lp_textView.setMargins(10, 10, 10, 10);
+                textView.setLayoutParams(lp_textView);
+                textView.setTextSize(pxFromDp(ListNews.this, 5));
+                textView.setText(item.title);
+                textView.setTextColor(Color.rgb(0, 0, 0));
+                textView.setTypeface(null, Typeface.BOLD);
+                textView.setGravity(Gravity.CENTER);
+
+//      Add to LinearLayout
+                linearLayout.addView(imageView);
+                linearLayout.addView(textView);
+                parent_LinearLayout.addView(linearLayout);
+            }
+        }
+    }
+
+
+
+    public static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
     }
 }
+
+
+
+
